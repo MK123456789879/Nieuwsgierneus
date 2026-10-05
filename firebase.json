@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "nieuwsgierneus",
+    "public": "public",
+    "ignore": ["firebase.json", "**/.*"],
+    "headers": [
+      { "source": "/events.json", "headers": [{ "key": "Cache-Control", "value": "no-cache" }] },
+      { "source": "/index.html",  "headers": [{ "key": "Cache-Control", "value": "no-cache" }] }
+    ]
+  }
+}

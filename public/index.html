@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nieuwsgierneus · uitjes in Limburg & Brabant</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👃</text></svg>">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F9FB; --surface:#FFFFFF; --ink:#18303D; --muted:#5F7582; --line:#DCE8EE; --soft:#EAF4F8;
+  --sky:#1C8DC6; --sun:#FFD23F; --mint:#2FB98A;
+  --c-wet:#1C8DC6; --c-design:#E5487A; --c-boek:#7B5CD6; --c-licht:#F2A01B; --c-kunst:#2FB98A;
+  --display:"Bricolage Grotesque","Arial Narrow",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+.app{display:grid;grid-template-columns:1fr;min-height:100vh}
+@media (min-width:1000px){ .app{grid-template-columns:minmax(440px,560px) 1fr} }
+.side{padding:24px 18px 64px}
+.mapwrap{display:none;position:relative}
+@media (min-width:1000px){ .mapwrap{display:block;position:sticky;top:0;height:100vh} }
+.app.show-map .mapwrap{display:block;position:fixed;inset:0;z-index:20;padding-top:env(safe-area-inset-top,0px)}
+#map{width:100%;height:100%;background:var(--soft)}
+
+header h1{white-space:nowrap;font-family:var(--display);font-weight:800;font-size:clamp(1.9rem,9.2vw,3.4rem);line-height:.95;letter-spacing:-.025em;margin:0}
+header p{margin:8px 0 20px;color:var(--muted)}
+.sun{display:inline-block;width:.62em;height:.62em;border-radius:50%;background:var(--sun);margin-left:.08em;vertical-align:.08em}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px;display:grid;gap:14px;box-shadow:0 6px 24px -14px rgba(28,141,198,.35)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lbl{font-size:.85rem;color:var(--muted);min-width:58px}
+.chip{border:1.5px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:999px;cursor:pointer;font-size:.92rem;display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+#cats .chip[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 14%,#fff);border-color:var(--c);color:var(--ink)}
+#cats .chip[aria-pressed="false"]{opacity:.6}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.radius{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.radius output{font-family:var(--display);font-weight:800;font-size:1.25rem;min-width:84px;text-align:right}
+input[type=range]{width:100%;accent-color:var(--sky)}
+.toggles{display:flex;gap:16px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.toggles label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.toggles input{accent-color:var(--sky);width:17px;height:17px}
+
+.summary{margin:22px 2px 4px;color:var(--muted);font-size:.92rem}
+.summary b{color:var(--ink)}
+.notice{background:#FFF6D6;border:1px solid #F3DC8A;border-radius:14px;padding:10px 14px;font-size:.9rem;margin-top:14px}
+
+.day{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:26px 0 8px;color:var(--muted)}
+.day.now{color:var(--mint)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;margin-bottom:10px;display:grid;grid-template-columns:4px 1fr auto;gap:12px}
+.card .bar{border-radius:4px;background:var(--c)}
+.card h3{font-family:var(--display);font-weight:600;font-size:1.12rem;line-height:1.25;margin:0 0 4px}
+.card h3 a{text-decoration:none}
+.card h3 a:hover{text-decoration:underline;text-decoration-color:var(--sun);text-decoration-thickness:3px}
+.meta{font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:2px 12px}
+.meta .km{color:var(--ink);font-weight:700}
+.why{margin:6px 0 0;font-size:.95rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:.76rem;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.tag.vak{background:#DDF5EC;color:#14724F}
+.tag.check{background:#FDE3EA;color:#A3204B}
+.tag.calm{background:#ECE6FB;color:#4E36A0}
+.acts{display:flex;flex-direction:column;align-items:center;gap:4px}
+.icon{background:none;border:0;cursor:pointer;font-size:1.3rem;line-height:1;padding:6px;border-radius:10px;color:#B9CBD4}
+.icon:hover{background:var(--soft)}
+.star[aria-pressed="true"]{color:var(--sun)}
+.past{opacity:.55}
+
+.group{background:linear-gradient(135deg,#E3F2FA,#FFFFFF 70%);border:1px solid #C7E3F1;border-radius:18px;padding:16px;margin-bottom:10px}
+.group h3{font-family:var(--display);font-weight:800;font-size:1.3rem;margin:0}
+.group .meta{margin-top:2px}
+.group .big{font-family:var(--display);font-weight:800;font-size:2.4rem;color:var(--sky);line-height:1;float:right;margin-left:12px;text-align:right}
+.group .big small{display:block;font-family:var(--body);font-weight:400;font-size:.75rem;color:var(--muted)}
+.group .open{margin-top:12px;border:0;background:var(--sky);color:#fff;padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:700}
+.group .kids{margin-top:12px;clear:both}
+.group .kids .card{margin-bottom:8px}
+
+.empty{padding:28px 4px;color:var(--muted)}
+.mobile-switch{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--ink);color:#fff;border:0;border-radius:999px;padding:12px 22px;font-weight:700;box-shadow:0 8px 24px -8px rgba(24,48,61,.6);cursor:pointer}
+@media (min-width:1000px){ .mobile-switch{display:none} }
+
+.pin{width:16px;height:16px;border-radius:50%;background:var(--c);border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+.home{width:30px;height:30px;border-radius:50%;background:var(--sun);border:3px solid #fff;display:grid;place-items:center;font-size:15px;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.marker-cluster div{background:var(--sky)!important;color:#fff;font-weight:700;font-family:var(--body)}
+.marker-cluster{background:rgba(28,141,198,.25)!important}
+.leaflet-popup-content{font-family:var(--body);margin:12px 14px}
+.leaflet-popup-content b{font-family:var(--display);font-size:1.02rem}
+footer{margin-top:40px;font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="side">
+    <header>
+      <h1>Nieuwsgierneus<span class="sun" aria-hidden="true"></span></h1>
+      <p>Voor nieuwsgierige kinderen in Limburg en Brabant</p>
+    </header>
+
+    <div class="panel">
+      <div class="row"><span class="lbl">Vanaf</span>
+        <button class="chip" id="fromHome" aria-pressed="true">🏠 Weert</button>
+        <button class="chip" id="fromMe" aria-pressed="false">📍 Mijn locatie</button>
+      </div>
+      <div class="radius">
+        <span class="lbl">Binnen</span>
+        <input type="range" id="radius" min="5" max="150" step="5" value="50" aria-label="Straal in kilometers">
+        <output id="radiusOut">50 km</output>
+      </div>
+      <div class="row" id="periods"><span class="lbl">Wanneer</span></div>
+      <div class="row" id="cats"><span class="lbl">Soort</span></div>
+      <div class="toggles">
+        <label><input type="checkbox" id="onlyStar"> Alleen bewaard</label>
+        <label><input type="checkbox" id="showPast"> Toon afgelopen</label>
+        <label><input type="checkbox" id="calm"> Prikkelarm</label>
+      </div>
+    </div>
+
+    <div id="notice"></div>
+    <p class="summary" id="summary"></p>
+    <main id="list"></main>
+    <footer id="footer"></footer>
+  </div>
+  <div class="mapwrap"><div id="map" role="region" aria-label="Kaart met uitjes"></div></div>
+</div>
+<button class="mobile-switch" id="switch">Kaart</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script>
+const HOLIDAY = { name:"Herfstvakantie", start:"2026-10-17", end:"2026-10-25" };
+const CATS = { wet:["Wetenschap","--c-wet"], design:["Design","--c-design"], boek:["Boeken","--c-boek"], licht:["Licht","--c-licht"], kunst:["Kunst & buiten","--c-kunst"] };
+const MS = ["jan","feb","mrt","apr","mei","jun","jul","aug","sep","okt","nov","dec"];
+const DAYS = ["zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag"];
+
+const iso = d => d.toISOString().slice(0,10);
+const D = s => new Date(s+"T00:00:00");
+const today = new Date(); today.setHours(0,0,0,0);
+const todayS = iso(new Date(today.getTime() - today.getTimezoneOffset()*6e4));
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function weekend(){
+  const d = new Date(today), wd = d.getDay();
+  const sat = new Date(d); sat.setDate(d.getDate() + (wd===0 ? -1 : 6-wd));
+  const sun = new Date(sat); sun.setDate(sat.getDate()+1);
+  return [iso(sat), iso(sun)];
+}
+const PERIODS = {
+  weekend:{label:"Dit weekend", range:weekend},
+  d30:{label:"30 dagen", range:()=>[todayS, iso(new Date(today.getTime()+30*864e5))]},
+  vak:{label:HOLIDAY.name, range:()=>[HOLIDAY.start, HOLIDAY.end]},
+  all:{label:"Alles", range:()=>["0000","9999"]},
+};
+
+const S = {
+  events:[], home:null, origin:null, fromMe:false,
+  radius:50, period:"d30", cats:new Set(Object.keys(CATS)),
+  onlyStar:false, showPast:false, calm:false, open:new Set(),
+  stars:new Set(),
+};
+try{ S.stars = new Set(JSON.parse(localStorage.getItem("nieuwsgierneus-stars")||"[]")); }catch(e){}
+const saveStars = () => { try{ localStorage.setItem("nieuwsgierneus-stars", JSON.stringify([...S.stars])); }catch(e){} };
+
+function km(a,b){ const R=6371,r=x=>x*Math.PI/180,dl=r(b.lat-a.lat),dn=r(b.lng-a.lng);
+  const h=Math.sin(dl/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dn/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+const overlaps = (e,[a,b]) => e.start <= b && (e.end||e.start) >= a;
+const isPast = e => (e.end||e.start) < todayS;
+const inHoliday = e => overlaps(e,[HOLIDAY.start,HOLIDAY.end]);
+
+function visible(){
+  const range = PERIODS[S.period].range();
+  const lim = S.radius >= 150 ? Infinity : S.radius;
+  return S.events.filter(e => {
+    if (!S.cats.has(e.cat)) return false;
+    if (S.onlyStar && !S.stars.has(e.id)) return false;
+    if (!S.showPast && isPast(e)) return false;
+    if (S.calm && !e.calm) return false;
+    if (!overlaps(e, S.showPast && S.period==="d30" ? ["0000",range[1]] : range)) return false;
+    if (e.dist != null && e.dist > lim) return false;
+    return true;
+  });
+}
+
+function whenText(e){
+  if (isPast(e)) return "Afgelopen";
+  if (e.start <= todayS) {
+    const left = Math.round((D(e.end||e.start)-today)/864e5);
+    return left===0 ? "Vandaag nog" : `Nu, nog ${left} ${left===1?"dag":"dagen"}`;
+  }
+  const n = Math.round((D(e.start)-today)/864e5);
+  return n===1 ? "Morgen" : n<7 ? DAYS[D(e.start).getDay()] : `Over ${n} dagen`;
+}
+function dateLabel(e){
+  const s=D(e.start), en=e.end?D(e.end):null;
+  if (!en || e.end===e.start) return `${s.getDate()} ${MS[s.getMonth()]}`;
+  return `${s.getDate()} ${MS[s.getMonth()]} t/m ${en.getDate()} ${MS[en.getMonth()]}`;
+}
+
+function cardHTML(e){
+  const c = CATS[e.cat]?.[1] || "--c-wet";
+  const meta = [
+    `<span>${esc(whenText(e))}</span>`, `<span>${dateLabel(e)}</span>`,
+    e.dist!=null ? `<span class="km">${Math.round(e.dist)} km</span>` : "",
+    e.place ? `<span>${esc(e.place)}</span>` : "", e.time ? `<span>${esc(e.time)}</span>` : "",
+    e.age ? `<span>${esc(e.age)}</span>` : "", e.price ? `<span>${esc(e.price)}</span>` : ""
+  ].join("");
+  const tags = [];
+  if (inHoliday(e) && !isPast(e)) tags.push(`<span class="tag vak">In de herfstvakantie</span>`);
+  if (e.calm) tags.push(`<span class="tag calm">Prikkelarm</span>`);
+  if (e.check) tags.push(`<span class="tag check">Datum checken</span>`);
+  (e.tags||[]).slice(0,3).forEach(t => tags.push(`<span class="tag">${esc(t)}</span>`));
+  return `<article class="card ${isPast(e)?"past":""}" style="--c:var(${c})">
+    <div class="bar"></div>
+    <div>
+      <h3><a href="${esc(e.url)}" target="_blank" rel="noopener">${esc(e.title)}</a></h3>
+      <div class="meta">${meta}</div>
+      ${e.why ? `<p class="why">${esc(e.why)}</p>` : ""}
+      ${tags.length ? `<div class="tags">${tags.join("")}</div>` : ""}
+    </div>
+    <div class="acts">
+      <button class="icon star" data-star="${esc(e.id)}" aria-pressed="${S.stars.has(e.id)}" aria-label="Bewaar ${esc(e.title)}">★</button>
+      ${e.lat!=null ? `<button class="icon" data-map="${esc(e.id)}" aria-label="Toon op kaart">📍</button>` : ""}
+    </div>
+  </article>`;
+}
+
+function render(){
+  const vis = visible();
+  // Grote evenementen bundelen: losse activiteiten met hetzelfde "group"-veld
+  const groups = new Map(), singles = [];
+  for (const e of vis) {
+    if (e.group) { if(!groups.has(e.group)) groups.set(e.group,[]); groups.get(e.group).push(e); }
+    else singles.push(e);
+  }
+  const blocks = singles.map(e => ({ key:e.start, e }));
+  for (const [name, items] of groups) {
+    items.sort((a,b)=>(a.dist??999)-(b.dist??999));
+    blocks.push({ key: items.map(i=>i.start).sort()[0], group:name, items });
+  }
+  // Lopende dingen tellen als "vandaag", zodat lange expo's niet bovenaan blijven hangen
+  const sortKey = b => { const s = b.key < todayS && !isPast(b.e||b.items[0]) ? todayS : b.key; return s; };
+  blocks.sort((a,b)=> sortKey(a).localeCompare(sortKey(b)) || ((a.e?.dist??0)-(b.e?.dist??0)));
+
+  let html="", last=null;
+  for (const b of blocks) {
+    const k = sortKey(b);
+    const label = k===todayS ? "Nu en vandaag" : (() => { const d=D(k); return `${DAYS[d.getDay()]} ${d.getDate()} ${MS[d.getMonth()]}`; })();
+    if (label!==last){ html += `<h2 class="day ${k===todayS?"now":""}">${label}</h2>`; last=label; }
+    if (b.e) { html += cardHTML(b.e); continue; }
+    const near = b.items.find(i=>i.dist!=null);
+    const open = S.open.has(b.group);
+    const first = b.items[0];
+    html += `<section class="group">
+      <div class="big">${b.items.length}<small>activiteiten</small></div>
+      <h3>${esc(b.group)}</h3>
+      <div class="meta"><span>${esc(whenText(first))}</span><span>${dateLabel(first)}</span>
+        ${near ? `<span class="km">dichtstbij ${Math.round(near.dist)} km (${esc(near.city||"")})</span>` : ""}</div>
+      <button class="open" data-group="${esc(b.group)}" aria-expanded="${open}">${open ? "Inklappen" : `Toon ${b.items.length} activiteiten`}</button>
+      ${open ? `<div class="kids">${b.items.map(cardHTML).join("")}</div>` : ""}
+    </section>`;
+  }
+  document.getElementById("list").innerHTML = html || `<p class="empty">Niets gevonden binnen ${S.radius} km in deze periode. Maak de straal groter of kies “Alles”.</p>`;
+
+  const nG = groups.size, nAll = vis.length;
+  document.getElementById("summary").innerHTML =
+    `<b>${nAll}</b> ${nAll===1?"uitje":"uitjes"} binnen ${S.radius>=150?"de hele regio":S.radius+" km"} van ${S.fromMe?"jouw locatie":"Weert"}${nG?`, waarvan ${[...groups.values()].reduce((s,g)=>s+g.length,0)} gebundeld`:""}.`;
+  bindList();
+  drawMap(vis);
+}
+
+function bindList(){
+  document.querySelectorAll("[data-star]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.star; S.stars.has(id)?S.stars.delete(id):S.stars.add(id); saveStars(); render(); });
+  document.querySelectorAll("[data-group]").forEach(b=>b.onclick=()=>{
+    const g=b.dataset.group; S.open.has(g)?S.open.delete(g):S.open.add(g); render(); });
+  document.querySelectorAll("[data-map]").forEach(b=>b.onclick=()=>focusOnMap(b.dataset.map));
+}
+
+/* ── Kaart ── */
+let map, cluster, circle, homeMarker; const markers = new Map();
+function initMap(){
+  if (typeof L === "undefined") { document.getElementById("map").innerHTML = '<p class="empty" style="padding:24px">Kaart kon niet laden.</p>'; return; }
+  map = L.map("map",{ zoomControl:true }).setView([S.origin.lat,S.origin.lng], 9);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{ maxZoom:18,
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  cluster = L.markerClusterGroup({ showCoverageOnHover:false, maxClusterRadius:40 });
+  map.addLayer(cluster);
+}
+function drawMap(vis){
+  if (!map) return;
+  cluster.clearLayers(); markers.clear();
+  for (const e of vis) {
+    if (e.lat==null) continue;
+    const icon = L.divIcon({ className:"", html:`<div class="pin" style="--c:${css(CATS[e.cat]?.[1]||"--c-wet")}"></div>`, iconSize:[16,16] });
+    const m = L.marker([e.lat,e.lng],{icon, title:e.title}).bindPopup(
+      `<b>${esc(e.title)}</b><br>${dateLabel(e)}${e.time?", "+esc(e.time):""}<br>${esc(e.place||"")}${e.dist!=null?` · ${Math.round(e.dist)} km`:""}<br><a href="${esc(e.url)}" target="_blank" rel="noopener">Meer info</a>`);
+    cluster.addLayer(m); markers.set(e.id,m);
+  }
+  if (homeMarker) map.removeLayer(homeMarker);
+  homeMarker = L.marker([S.origin.lat,S.origin.lng],{ icon:L.divIcon({className:"",html:`<div class="home">${S.fromMe?"📍":"🏠"}</div>`,iconSize:[30,30]}), zIndexOffset:1000 }).addTo(map);
+  if (circle) map.removeLayer(circle);
+  if (S.radius < 150) {
+    circle = L.circle([S.origin.lat,S.origin.lng],{ radius:S.radius*1000, color:css("--sky"), weight:2, fillOpacity:.06 }).addTo(map);
+  }
+}
+function fitRadius(){ if(map && circle && S.radius<150) map.fitBounds(circle.getBounds(),{padding:[20,20]}); }
+function focusOnMap(id){
+  const m = markers.get(id); if(!m || !map) return;
+  if (innerWidth < 1000) setMapView(true);
+  setTimeout(()=>{ map.invalidateSize(); cluster.zoomToShowLayer(m, ()=>m.openPopup()); }, 60);
+}
+function setMapView(on){
+  document.getElementById("app").classList.toggle("show-map", on);
+  document.getElementById("switch").textContent = on ? "Lijst" : "Kaart";
+  if (on && map) setTimeout(()=>map.invalidateSize(), 50);
+}
+
+/* ── Bediening ── */
+function chips(){
+  const p = document.getElementById("periods");
+  p.querySelectorAll(".chip").forEach(c=>c.remove());
+  for (const [k,v] of Object.entries(PERIODS)) {
+    const b = document.createElement("button"); b.className="chip"; b.textContent=v.label;
+    b.setAttribute("aria-pressed", S.period===k);
+    b.onclick=()=>{ S.period=k; chips(); render(); }; p.append(b);
+  }
+  const c = document.getElementById("cats");
+  c.querySelectorAll(".chip").forEach(x=>x.remove());
+  for (const [k,[label,v]] of Object.entries(CATS)) {
+    const b = document.createElement("button"); b.className="chip"; b.style.setProperty("--c",`var(${v})`);
+    b.innerHTML = `<span class="dot"></span>${label}`; b.setAttribute("aria-pressed", S.cats.has(k));
+    b.onclick=()=>{ S.cats.has(k)?S.cats.delete(k):S.cats.add(k); if(!S.cats.size) Object.keys(CATS).forEach(x=>S.cats.add(x)); chips(); render(); };
+    c.append(b);
+  }
+}
+function setOrigin(o, fromMe){
+  S.origin=o; S.fromMe=fromMe;
+  document.getElementById("fromHome").setAttribute("aria-pressed", !fromMe);
+  document.getElementById("fromMe").setAttribute("aria-pressed", fromMe);
+  for (const e of S.events) e.dist = e.lat!=null ? km(o,e) : null;
+  render(); fitRadius();
+}
+
+document.getElementById("radius").oninput = e => {
+  S.radius = +e.target.value;
+  document.getElementById("radiusOut").textContent = S.radius>=150 ? "Alles" : `${S.radius} km`;
+  render();
+};
+document.getElementById("radius").onchange = fitRadius;
+document.getElementById("fromHome").onclick = () => setOrigin(S.home,false);
+document.getElementById("fromMe").onclick = () => {
+  if (!navigator.geolocation) return alert("Je browser kan je locatie niet bepalen.");
+  navigator.geolocation.getCurrentPosition(
+    p => setOrigin({lat:p.coords.latitude,lng:p.coords.longitude}, true),
+    () => alert("Locatie niet beschikbaar. Geef de site toestemming in je browserinstellingen."),
+    { timeout:10000 });
+};
+["onlyStar","showPast","calm"].forEach(id => document.getElementById(id).onchange = e => { S[id]=e.target.checked; render(); });
+document.getElementById("switch").onclick = () => setMapView(!document.getElementById("app").classList.contains("show-map"));
+
+fetch("events.json",{cache:"no-store"}).then(r=>r.json()).then(data=>{
+  S.home = data.home || {lat:51.2517,lng:5.7058};
+  S.events = data.events || [];
+  if (data.sample) document.getElementById("notice").innerHTML = `<div class="notice">Dit is voorbeelddata. Na de eerste nachtelijke run staan hier de echte activiteiten.</div>`;
+  const g = new Date(data.generated);
+  document.getElementById("footer").textContent = `Bijgewerkt ${g.toLocaleDateString("nl-NL",{day:"numeric",month:"long"})} om ${g.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"})}.`;
+  S.origin = S.home;
+  chips(); initMap(); setOrigin(S.home,false);
+}).catch(err=>{ console.error(err);
+  document.getElementById("list").innerHTML = `<p class="empty">events.json kon niet geladen worden. Start de site via een webserver (npm run dev), niet als los bestand.</p>`;
+});
+</script>
+</body>
+</html>
