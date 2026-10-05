@@ -1,0 +1,146 @@
+{
+  "https://weekendvandewetenschap.nl/activiteiten/2026/soldeer-je-eigen-led-print/": {
+    "title": "Soldeer je eigen LED print",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/soldeer-je-eigen-led-print/",
+    "org": "De Jonge Onderzoekers Eindhoven (djoe)",
+    "hotspot": "Eindhoven",
+    "venue": "Ingang via de Lindenlaan Frederiklaan 163 5616 NG Eindhoven",
+    "street": "Frederiklaan 163",
+    "postcode": "5616 NG",
+    "city": "Eindhoven",
+    "slots": [
+      {
+        "date": "2026-10-03",
+        "from": "11:00",
+        "to": "17:00"
+      },
+      {
+        "date": "2026-10-04",
+        "from": "10:00",
+        "to": "17:00"
+      }
+    ],
+    "types": [
+      "Tentoonstelling"
+    ],
+    "themes": [
+      "Uitvindingen & Techniek"
+    ],
+    "age": "8–14",
+    "price": "Gratis",
+    "access": [],
+    "description": null
+  },
+  "https://weekendvandewetenschap.nl/activiteiten/2026/maak-je-eigen-stuiterbal-2/": {
+    "title": "Maak je eigen stuiterbal",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/maak-je-eigen-stuiterbal-2/",
+    "org": "ZB Bibliotheek van Zeeland ism Joint Research Center Zeeland",
+    "hotspot": null,
+    "venue": "ZB Bibliotheek van Zeeland Kousteensedijk 7 4331 JE Middelburg",
+    "street": "Kousteensedijk 7",
+    "postcode": "4331 JE",
+    "city": "Middelburg",
+    "slots": [
+      {
+        "date": "2026-10-03",
+        "from": "10:00",
+        "to": "16:00"
+      }
+    ],
+    "types": [
+      "Proefjes",
+      "Spel",
+      "Workshop"
+    ],
+    "themes": [
+      "Proefjes & Getallen",
+      "Uitvindingen & Techniek"
+    ],
+    "age": "8–14",
+    "price": "Gratis",
+    "access": [],
+    "description": null
+  },
+  "https://weekendvandewetenschap.nl/activiteiten/2026/ontdek-hoe-je-hart-werkt/": {
+    "title": "Ontdek hoe je hart werkt",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/ontdek-hoe-je-hart-werkt/",
+    "org": "UMC Utrecht",
+    "hotspot": null,
+    "venue": "Wilhelmina KinderZiekenhuis Lundlaan 6 3584 EA Utrecht",
+    "street": "Lundlaan 6",
+    "postcode": "3584 EA",
+    "city": "Utrecht",
+    "slots": [
+      {
+        "date": "2026-10-04",
+        "from": "10:00",
+        "to": "16:00"
+      }
+    ],
+    "types": [
+      "Overige"
+    ],
+    "themes": [
+      "Lijf & Brein"
+    ],
+    "age": "8–14",
+    "price": "Gratis",
+    "access": [],
+    "description": null
+  },
+  "https://weekendvandewetenschap.nl/activiteiten/2026/kun-je-meten-wat-je-niet-ziet/": {
+    "title": "Kun je meten wat je niet ziet?",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/kun-je-meten-wat-je-niet-ziet/",
+    "org": "Universiteit Utrecht",
+    "hotspot": null,
+    "venue": "Victor J. Koningsbergergebouw Budapestlaan 2 3584 CD Utrecht",
+    "street": "Budapestlaan 2",
+    "postcode": "3584 CD",
+    "city": "Utrecht",
+    "slots": [
+      {
+        "date": "2026-10-04",
+        "from": "10:00",
+        "to": "17:00"
+      }
+    ],
+    "types": [
+      "Workshop"
+    ],
+    "themes": [
+      "Verhalen & Talen",
+      "Lijf & Brein"
+    ],
+    "age": "8–14",
+    "price": "Gratis",
+    "access": [],
+    "description": null
+  },
+  "https://weekendvandewetenschap.nl/activiteiten/2026/bouw-test-speeltechniek-voor-jonge-ontdekkers/": {
+    "title": "Bouw-, test- & speeltechniek voor jonge ontdekkers",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/bouw-test-speeltechniek-voor-jonge-ontdekkers/",
+    "org": "SintLucas",
+    "hotspot": "Eindhoven",
+    "venue": "Torenallee 75 5617 BB Eindhoven",
+    "street": "Torenallee 75",
+    "postcode": "5617 BB",
+    "city": "Eindhoven",
+    "slots": [
+      {
+        "date": "2026-10-03",
+        "from": "10:00",
+        "to": "16:00"
+      }
+    ],
+    "types": [
+      "Workshop"
+    ],
+    "themes": [
+      "Uitvindingen & Techniek"
+    ],
+    "age": "Alle leeftijden",
+    "price": "Gratis",
+    "access": [],
+    "description": null
+  }
+}

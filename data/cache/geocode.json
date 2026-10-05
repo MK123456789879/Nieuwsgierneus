@@ -1,0 +1,32 @@
+{
+  "Frederiklaan 163 Eindhoven | 5616 NG | Eindhoven": {
+    "lat": 51.44272782,
+    "lng": 5.46014542,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Kousteensedijk 7 Middelburg | 4331 JE | Middelburg": {
+    "lat": 51.49632153,
+    "lng": 3.61579474,
+    "province": "Zeeland",
+    "city": "Middelburg"
+  },
+  "Lundlaan 6 Utrecht | 3584 EA | Utrecht": {
+    "lat": 52.08942212,
+    "lng": 5.18097449,
+    "province": "Utrecht",
+    "city": "Utrecht"
+  },
+  "Budapestlaan 2 Utrecht | 3584 CD | Utrecht": {
+    "lat": 52.0868567,
+    "lng": 5.16704526,
+    "province": "Utrecht",
+    "city": "Utrecht"
+  },
+  "Torenallee 75 Eindhoven | 5617 BB | Eindhoven": {
+    "lat": 51.44693556,
+    "lng": 5.45467868,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  }
+}
