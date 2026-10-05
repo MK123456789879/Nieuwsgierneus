@@ -16,6 +16,8 @@ const THEMES = ["Verhalen & Talen","Lijf & Brein","Dieren & Natuur","Proefjes & 
 const AGES = { "Kinderen 8 - 14 jaar": "8–14", "Jongeren 14 - 18 jaar": "14–18", "Alle leeftijden": "Alle leeftijden" };
 const PRICES = ["Gratis met aanmelding","Gratis","Betaalde toegang"];
 const ACCESS = ["Rolstoeltoegankelijk","Prikkelarme momenten/ruimtes beschikbaar","Hulphond welkom","Objecten kunnen aangeraakt worden"];
+const LABELS = ["Locatie","Datum en tijd","Naam organisatie","Hotspot","Soort activiteit","Thema","Doelgroep","Voor wie","Toegangsprijs","Prijs","Toegankelijkheid","Website","Social media","Open in Google maps","Ga naar de"];
+const WEEKDAYS = ["maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag","zondag"];
 const MONTHS = { januari:1,februari:2,maart:3,april:4,mei:5,juni:6,juli:7,augustus:8,september:9,oktober:10,november:11,december:12 };
 
 async function collectUrls(year) {
@@ -69,14 +71,15 @@ export function parseDetail(html, url) {
   const iLoc = lines.findIndex(l => /^Locatie$/i.test(l));
   const iDate = lines.findIndex(l => /^Datum en tijd$/i.test(l));
 
-  // Locatie: alles tussen "Locatie" en "Datum en tijd"
-  const locText = iLoc >= 0 ? lines.slice(iLoc + 1, iDate > iLoc ? iDate : iLoc + 4).join(" ") : "";
-  const pc = locText.match(/(\d{4})\s?([A-Z]{2})\s+([A-Za-zÀ-ÿ' -]+)/);
-  const postcode = pc ? `${pc[1]} ${pc[2]}` : null;
-  const city = pc ? pc[3].trim() : null;
-  // Straat = de regel vóór de postcode (of hetzelfde stuk tekst ervóór als alles op één regel staat)
-  const locLines = iLoc >= 0 ? lines.slice(iLoc + 1, iDate > iLoc ? iDate : iLoc + 4) : [];
+  // Locatie: alles tussen "Locatie" en "Datum en tijd", zonder de kaart-link
+  const locLines = (iLoc >= 0 ? lines.slice(iLoc + 1, iDate > iLoc ? iDate : iLoc + 4) : [])
+    .filter(l => !/^Open in Google maps$/i.test(l));
+  const locText = locLines.join(" ");
   const pcLine = locLines.findIndex(l => /\d{4}\s?[A-Z]{2}/.test(l));
+  const pc = (pcLine >= 0 ? locLines[pcLine] : locText).match(/(\d{4})\s?([A-Z]{2})\s+([A-Za-zÀ-ÿ' -]+)/);
+  const postcode = pc ? `${pc[1]} ${pc[2]}` : null;
+  const city = pc ? pc[3].replace(/\s*Open in Google maps\s*/ig, "").trim() : null;
+  // Straat = de regel vóór de postcode (of hetzelfde stuk tekst ervóór als alles op één regel staat)
   let street = null;
   if (pcLine > 0) street = locLines[pcLine - 1];
   else if (pcLine === 0) street = locLines[0].split(/\d{4}\s?[A-Z]{2}/)[0].match(/[^,]*\d+[a-zA-Z]?\s*$/)?.[0]?.trim() || null;
@@ -98,9 +101,10 @@ export function parseDetail(html, url) {
   const hotspot = lines.find(l => /^Hotspot\s/.test(l))?.replace(/^Hotspot\s/, "") || null;
 
   // Organisatie: eerste regel na het datumblok die geen bekende waarde of label is
-  const known = new Set([...TYPES, ...THEMES, ...PRICES, ...ACCESS]);
+  const known = new Set([...TYPES, ...THEMES, ...PRICES, ...ACCESS, ...LABELS]);
+  const labelRe = new RegExp(`^(${[...LABELS, ...WEEKDAYS].map(s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "i");
   const afterDate = lines.slice(Math.max(iDate, 0) + 1).filter(l =>
-    !/\d{4}\s+van\s+\d/i.test(l) && !/^Van \d/i.test(l) && !/\d{4}$/.test(l) && !/^(Zaterdag|Zondag|Vrijdag|Hotspot|Soort activiteit|Thema|Voor wie|Prijs|Toegankelijkheid)/i.test(l) &&
+    !/\d{4}\s+van\s+\d/i.test(l) && !/^Van \d/i.test(l) && !/\d{4}$/.test(l) && !labelRe.test(l) &&
     ![...known].some(k => l.includes(k)) && !Object.keys(AGES).some(k => l.startsWith(k)));
   const org = afterDate[0] || null;
 

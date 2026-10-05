@@ -8,23 +8,22 @@ Handoff voor Cursor en Claude. Bijwerken aan het einde van een sessie.
 |------|--------|
 | Laatst bijgewerkt | 5 oktober 2026 |
 | Remote | https://github.com/MK123456789879/Nieuwsgierneus |
-| Branch | `main` (nog geen commits, remote is leeg) |
+| Branch | `main` |
 | Firebase site-id | `nieuwsgierneus` |
 
 ## Waar staan we?
 
-Zip uitgepakt in de projectroot en gekoppeld aan de lege GitHub-repo. De site in `public/index.html` is een lijst plus Leaflet-kaart (periode, categorie, straal vanaf Weert of eigen locatie, sterren, prikkelarm). Acht handmatige uitjes staan in `data/curated.json`. De WvdW-adapter (`scripts/adapters/wvdw.mjs`) en hulpen in `scripts/lib/util.mjs` zijn aanwezig.
+`scripts/build-events.mjs`, `scripts/lib/geocode.mjs` en `public/events.json` zijn hersteld (waren 0 bytes in commit c2b8840). `public/events.json` is geldige voorbeelddata (`"sample": true`, 26 items) tot de eerste echte run. `data/cache/.gitkeep` houdt de cachemap in git.
 
-## Wat ontbreekt
+`npm run test:wvdw` haalde 1035 links op en bewaarde 2 van 5 activiteiten (de andere drie liggen buiten Limburg en Noord-Brabant: Middelburg, Utrecht). De twee overgebleven items hebben titel, postcode `1234 AB`, plaats, datum, tijd, organisatie, lat/lng, leeftijd en prijs.
 
-Deze bestanden uit de zip zijn leeg (0 bytes):
+De site draait lokaal: lijst (6 uitjes binnen 50 km van Weert), kaarttegels, markers en straalcirkel. Geen fouten van de pagina zelf. `data/curated.json` en de siteteksten zijn niet gewijzigd. Nog niet gedeployed en nog geen volledige `build:events`.
 
-- `scripts/build-events.mjs` — pipeline waar `npm run build:events` en de nachtelijke Action op leunen
-- `scripts/lib/geocode.mjs` — PDOK Locatieserver
-- `public/events.json` — de site fetcht dit bestand; nu geen geldige JSON
+## Adapter
 
-`data/cache/` is leeg. Er is nog niet gedeployed. GitHub CLI voor `martenk123` heeft een ongeldige token; pushen moet met account `MK123456789879`.
+`scripts/adapters/wvdw.mjs` sloeg de labels "Naam organisatie" en "Open in Google maps" op als organisatie en plaats. Die regels worden nu overgeslagen; de stad komt van de postcoderegel.
 
 ## Eerstvolgende
 
-`build-events.mjs` en `geocode.mjs` aanvullen, daarna een lokale `build:events` tot `public/events.json` klopt.
+1. `npm run build:events` lokaal tot `public/events.json` de echte activiteiten bevat.
+2. Secret `FIREBASE_SERVICE_ACCOUNT` en variabele `FIREBASE_PROJECT_ID` in de repo zetten, workflow handmatig starten.
