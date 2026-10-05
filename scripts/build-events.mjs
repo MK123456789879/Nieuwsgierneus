@@ -46,7 +46,17 @@ for (const ev of all) {
   const dupKey = `${ev.title.toLowerCase()}|${ev.start}|${ev.city || ""}`;
   if (seen.has(dupKey)) continue; seen.add(dupKey);                    // dubbelingen
 
-  if (ev.address || ev.postcode || ev.city) {
+  // Postcode buiten Limburg/Brabant niet geocoderen. Zonder postcode (curated) wél.
+  // PDOK blijft daarna het definitieve provinciefilter.
+  const pcNum = Number(String(ev.postcode || "").match(/\d{4}/)?.[0]);
+  if (Number.isInteger(pcNum) && (pcNum < 4600 || pcNum > 6499)) {
+    if (report[ev.source]) report[ev.source].prefilter = (report[ev.source].prefilter || 0) + 1;
+    continue;
+  }
+
+  if (!(ev.address || ev.postcode || ev.city)) {
+    if (ev.source !== "curated") continue;                         // geen locatie = niet bruikbaar
+  } else {
     const g = await geocode(ev);
     if (g) {
       if (!KEEP_PROVINCES.includes(g.province)) continue;              // buiten Limburg/Brabant

@@ -10,20 +10,20 @@ Handoff voor Cursor en Claude. Bijwerken aan het einde van een sessie.
 | Remote | https://github.com/MK123456789879/Nieuwsgierneus |
 | Branch | `main` |
 | Firebase site-id | `nieuwsgierneus` |
+| Git in deze repo | `MK123456789879` / `MK123456789879@users.noreply.github.com` |
 
 ## Waar staan we?
 
-`scripts/build-events.mjs`, `scripts/lib/geocode.mjs` en `public/events.json` zijn hersteld (waren 0 bytes in commit c2b8840). `public/events.json` is geldige voorbeelddata (`"sample": true`, 26 items) tot de eerste echte run. `data/cache/.gitkeep` houdt de cachemap in git.
+Eerste echte `build:events` is gedraaid. `public/events.json` heeft geen `sample` meer.
 
-`npm run test:wvdw` haalde 1035 links op en bewaarde 2 van 5 activiteiten (de andere drie liggen buiten Limburg en Noord-Brabant: Middelburg, Utrecht). De twee overgebleven items hebben titel, postcode `1234 AB`, plaats, datum, tijd, organisatie, lat/lng, leeftijd en prijs.
+Report: WvdW 1035 gevonden, 854 voorgefilterd op postcode buiten 4600–6499, 167 gehouden. Curated 8 gevonden en 8 gehouden. Totaal 175. Alle 167 WvdW-items hebben coördinaten in Limburg of Noord-Brabant. 164 van de 167 hebben een beschrijving (max. 220 tekens).
 
-De site draait lokaal: lijst (6 uitjes binnen 50 km van Weert), kaarttegels, markers en straalcirkel. Geen fouten van de pagina zelf. `data/curated.json` en de siteteksten zijn niet gewijzigd. Nog niet gedeployed en nog geen volledige `build:events`.
+Lokaal, met "Toon afgelopen" aan: de groep "Weekend van de Wetenschap 2026" toont 106 activiteiten binnen 50 km van Weert, klapt open, en de kaartclusters tellen op tot diezelfde 106. Nog niet gedeployed.
 
 ## Adapter
 
-`scripts/adapters/wvdw.mjs` sloeg de labels "Naam organisatie" en "Open in Google maps" op als organisatie en plaats. Die regels worden nu overgeslagen; de stad komt van de postcoderegel.
+Beschrijving komt uit de alinea's onder de titel, niet uit de meta-description. Organisatie is de regel ná "Naam organisatie" (niet de fotocredit "Credits:"). Postcodes zonder letters (`5041 Tilburg`) worden ook gelezen.
 
 ## Eerstvolgende
 
-1. `npm run build:events` lokaal tot `public/events.json` de echte activiteiten bevat.
-2. Secret `FIREBASE_SERVICE_ACCOUNT` en variabele `FIREBASE_PROJECT_ID` in de repo zetten, workflow handmatig starten.
+Secret `FIREBASE_SERVICE_ACCOUNT` en variabele `FIREBASE_PROJECT_ID` in de repo zetten, workflow handmatig starten.

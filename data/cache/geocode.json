@@ -28,5 +28,305 @@
     "lng": 5.45467868,
     "province": "Noord-Brabant",
     "city": "Eindhoven"
+  },
+  "Kastanjelaan 500 Eindhoven | Eindhoven": {
+    "lat": 51.44585913,
+    "lng": 5.4544466,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Avenue Céramique 250 Maastricht | Maastricht": {
+    "lat": 50.84252467,
+    "lng": 5.70202819,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Arcen": {
+    "lat": 51.48688619,
+    "lng": 6.19276975,
+    "province": "Limburg",
+    "city": "Arcen"
+  },
+  "Eindhoven": {
+    "lat": 51.45016172,
+    "lng": 5.45853544,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Maastricht": {
+    "lat": 50.85296715,
+    "lng": 5.6995303,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Molenstraat 65 Oss | 5341 GC | Oss": {
+    "lat": 51.76544811,
+    "lng": 5.52654462,
+    "province": "Noord-Brabant",
+    "city": "Oss"
+  },
+  "Tapijn 11 Maastricht | 6211 ME | Maastricht": {
+    "lat": 50.86504814,
+    "lng": 5.71448803,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Emmasingel 22 Eindhoven | 5611 AZ | Eindhoven": {
+    "lat": 51.43943879,
+    "lng": 5.47474736,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Tapijnkazerne 11 Maastricht | 6211 ME | Maastricht": {
+    "lat": 50.84286313,
+    "lng": 5.6862433,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Markt 114 Geleen | 6161 GN | Geleen": {
+    "lat": 50.96996006,
+    "lng": 5.82824794,
+    "province": "Limburg",
+    "city": "Geleen"
+  },
+  "De Zaale 20 Eindhoven | 5612 AJ | Eindhoven": {
+    "lat": 51.44871616,
+    "lng": 5.49476036,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Rudonk 6 Breda | 4824 AJ | Breda": {
+    "lat": 51.60907181,
+    "lng": 4.7568693,
+    "province": "Noord-Brabant",
+    "city": "Breda"
+  },
+  "Nassaustraat 36 Venlo | 5911 BV | Venlo": {
+    "lat": 51.36882912,
+    "lng": 6.17250478,
+    "province": "Limburg",
+    "city": "Venlo"
+  },
+  "Duboisdomein 30 Maastricht | 6229 GT | Maastricht": {
+    "lat": 50.83870204,
+    "lng": 5.70818709,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Molenstraat 20 Oss | 5341 GD | Oss": {
+    "lat": 51.76787391,
+    "lng": 5.52483681,
+    "province": "Noord-Brabant",
+    "city": "Oss"
+  },
+  "Handelstraat 3 Boxmeer | 5831 AV | Boxmeer": {
+    "lat": 51.63781048,
+    "lng": 5.93470671,
+    "province": "Noord-Brabant",
+    "city": "Boxmeer"
+  },
+  "Museumplein 2 Kerkrade | 6461 MB | Kerkrade": {
+    "lat": 50.86113125,
+    "lng": 6.05846278,
+    "province": "Limburg",
+    "city": "Kerkrade"
+  },
+  "Burgemeester Brokxlaan 6 Tilburg | 5041 SB | Tilburg": {
+    "lat": 51.56094524,
+    "lng": 5.08973441,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "Burgemeester Brokxlaan 1000 Tilburg | 5041 SC | Tilburg": {
+    "lat": 51.56176108,
+    "lng": 5.08581847,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "Wim de Körverstraat 43 Boxmeer | 5831 AN | Boxmeer": {
+    "lat": 51.6419233,
+    "lng": 5.93961926,
+    "province": "Noord-Brabant",
+    "city": "Boxmeer"
+  },
+  "Burgemeester Brokxlaan 20 Tilburg | 5041 SB | Tilburg": {
+    "lat": 51.56089573,
+    "lng": 5.08807226,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "Gaetano Martinolaan 10 Maastricht | 6229 GS | Maastricht": {
+    "lat": 50.83942601,
+    "lng": 5.71529654,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Doctor Ingenieur van Veenweg 10 Bergen op Zoom | 4612 PE | Bergen op Zoom": {
+    "lat": 51.49288561,
+    "lng": 4.27037301,
+    "province": "Noord-Brabant",
+    "city": "Bergen op Zoom"
+  },
+  "Burgemeester Brokxlaan 22 Tilburg | 5041 SB | Tilburg": {
+    "lat": 51.56103174,
+    "lng": 5.08793291,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "Achter Het Raadhuis 2 Hilvarenbeek | 5081 BA | Hilvarenbeek": {
+    "lat": 51.48504368,
+    "lng": 5.13472235,
+    "province": "Noord-Brabant",
+    "city": "Hilvarenbeek"
+  },
+  "Nieuwe Emmasingel 31 Eindhoven | 5611 AM | Eindhoven": {
+    "lat": 51.44013267,
+    "lng": 5.47689888,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Begijnengang 2 Venlo | 5911 JL | Venlo": {
+    "lat": 51.36948135,
+    "lng": 6.17007341,
+    "province": "Limburg",
+    "city": "Venlo"
+  },
+  "Markt 1b Geleen | 6161 GE | Geleen": {
+    "lat": 50.96948937,
+    "lng": 5.82715975,
+    "province": "Limburg",
+    "city": "Geleen"
+  },
+  "Hogeschoollaan 1 Breda | 4818 CR | Breda": {
+    "lat": 51.58370129,
+    "lng": 4.79710596,
+    "province": "Noord-Brabant",
+    "city": "Breda"
+  },
+  "Fransebaan 93 Eindhoven | 5627 JP | Eindhoven": {
+    "lat": 51.48421269,
+    "lng": 5.44944732,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Universiteitssingel 50 Maastricht | 6229 GR | Maastricht": {
+    "lat": 50.83516016,
+    "lng": 5.71684899,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "Markt 1 Geleen | 6161 GE | Geleen": {
+    "lat": 50.96998918,
+    "lng": 5.82656821,
+    "province": "Limburg",
+    "city": "Geleen"
+  },
+  "Sint Urbanusweg 17 Venlo | 5914 CB | Venlo": {
+    "lat": 51.38330106,
+    "lng": 6.16751316,
+    "province": "Limburg",
+    "city": "Venlo"
+  },
+  "Linkensweg 1 Oss | 5341 CA | Oss": {
+    "lat": 51.77044308,
+    "lng": 5.52937127,
+    "province": "Noord-Brabant",
+    "city": "Oss"
+  },
+  "P. Debyelaan 25 Maastricht | 6229 HX | Maastricht": {
+    "lat": 50.83519635,
+    "lng": 5.71316687,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "President Kennedystraat 46B Margraten | 6269 CC | Margraten": {
+    "lat": 50.82540018,
+    "lng": 5.81817819,
+    "province": "Limburg",
+    "city": "Margraten"
+  },
+  "Keulsepoort 5 Venlo | 5911 BX | Venlo": {
+    "lat": 51.36673328,
+    "lng": 6.17189902,
+    "province": "Limburg",
+    "city": "Venlo"
+  },
+  "Frederiklaan 163 Eindhoven | 5616 NE | Eindhoven": {
+    "lat": 51.44272782,
+    "lng": 5.46014542,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Noord Brabantlaan 1A Eindhoven | 5652 HA | Eindhoven": {
+    "lat": 51.44361096,
+    "lng": 5.4468137,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Molenstraat 6 Breda | 4811 GS | Breda": {
+    "lat": 51.5877744,
+    "lng": 4.77928517,
+    "province": "Noord-Brabant",
+    "city": "Breda"
+  },
+  "Gasfabriek 6 Eindhoven | 5613 CP | Eindhoven": {
+    "lat": 51.43822811,
+    "lng": 5.48741367,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Alberdingk Thijmlaan 3 Eindhoven | 5615 EB | Eindhoven": {
+    "lat": 51.42607291,
+    "lng": 5.48012609,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Jezuietenplein 33 Oudenbosch | 4731 HR | Oudenbosch": {
+    "lat": 51.58803178,
+    "lng": 4.52865709,
+    "province": "Noord-Brabant",
+    "city": "Oudenbosch"
+  },
+  "Euterpelaan 100 Oss | 5344 CS | Oss": {
+    "lat": 51.75860408,
+    "lng": 5.51812525,
+    "province": "Noord-Brabant",
+    "city": "Oss"
+  },
+  "Torenallee 2 Eindhoven | 5617 BC | Eindhoven": {
+    "lat": 51.44579158,
+    "lng": 5.4593256,
+    "province": "Noord-Brabant",
+    "city": "Eindhoven"
+  },
+  "Locomotiefboulevard 101 Tilburg | 5041 | Tilburg": {
+    "lat": 51.56117371,
+    "lng": 5.08638745,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "Burgemeester Brokxlaan 100 Tilburg | 5014 | Tilburg": {
+    "lat": 51.56079404,
+    "lng": 5.08945008,
+    "province": "Noord-Brabant",
+    "city": "Tilburg"
+  },
+  "6211 | Maastricht": {
+    "lat": 50.84708638,
+    "lng": 5.68275571,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "6229 | Maastricht": {
+    "lat": 50.82429797,
+    "lng": 5.7086612,
+    "province": "Limburg",
+    "city": "Maastricht"
+  },
+  "6161 | Geleen": {
+    "lat": 50.97205271,
+    "lng": 5.82618721,
+    "province": "Limburg",
+    "city": "Geleen"
   }
 }

@@ -16,9 +16,40 @@ const THEMES = ["Verhalen & Talen","Lijf & Brein","Dieren & Natuur","Proefjes & 
 const AGES = { "Kinderen 8 - 14 jaar": "8–14", "Jongeren 14 - 18 jaar": "14–18", "Alle leeftijden": "Alle leeftijden" };
 const PRICES = ["Gratis met aanmelding","Gratis","Betaalde toegang"];
 const ACCESS = ["Rolstoeltoegankelijk","Prikkelarme momenten/ruimtes beschikbaar","Hulphond welkom","Objecten kunnen aangeraakt worden"];
-const LABELS = ["Locatie","Datum en tijd","Naam organisatie","Hotspot","Soort activiteit","Thema","Doelgroep","Voor wie","Toegangsprijs","Prijs","Toegankelijkheid","Website","Social media","Open in Google maps","Ga naar de"];
+const LABELS = ["Locatie","Datum en tijd","Naam organisatie","Hotspot","Soort activiteit","Thema","Doelgroep","Voor wie","Toegangsprijs","Prijs","Toegankelijkheid","Website","Social media","Open in Google maps","Ga naar de","Credits"];
 const WEEKDAYS = ["maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag","zondag"];
 const MONTHS = { januari:1,februari:2,maart:3,april:4,mei:5,juni:6,juli:7,augustus:8,september:9,oktober:10,november:11,december:12 };
+
+/** Platte tekst, afgekapt op een woordgrens. Het resultaat blijft binnen ±220 tekens. */
+function clipText(text, max = 220) {
+  const t = String(text || "").replace(/\s+/g, " ").trim();
+  if (!t) return null;
+  if (t.length <= max) return t;
+  let cut = t.slice(0, max - 1);
+  const sp = cut.lastIndexOf(" ");
+  if (sp > 40) cut = cut.slice(0, sp);
+  return cut.replace(/[.,;:!?…–—-]+$/u, "").trim() + "…";
+}
+
+/** Tekst onder de titel en boven Locatie: de intro-alinea's van het artikel. */
+function activityDescription($) {
+  const h1 = $("h1").first();
+  const scope = h1.closest("article");
+  const root = scope.length ? scope : h1.parent();
+  const labelRe = new RegExp(`^(${[...LABELS, ...WEEKDAYS].join("|")})\\b`, "i");
+  const parts = [];
+  root.find("p").each((_, p) => {
+    const t = $(p).text().replace(/\s+/g, " ").trim();
+    if (!t) return;
+    if (labelRe.test(t)) return;
+    if (/^(naar de website|website|open in google maps)$/i.test(t)) return;
+    if (/\d{4}\s?[A-Z]{2}\b/.test(t)) return;
+    if (/^van \d{1,2}:\d{2}/i.test(t)) return;
+    if (/\d{1,2}\s+[a-z]+,?\s+\d{4}/i.test(t)) return;
+    parts.push(t);
+  });
+  return clipText(parts.join(" "));
+}
 
 async function collectUrls(year) {
   const re = new RegExp(`/activiteiten/${year}/([^/?#]+)/?$`);
@@ -75,9 +106,10 @@ export function parseDetail(html, url) {
   const locLines = (iLoc >= 0 ? lines.slice(iLoc + 1, iDate > iLoc ? iDate : iLoc + 4) : [])
     .filter(l => !/^Open in Google maps$/i.test(l));
   const locText = locLines.join(" ");
-  const pcLine = locLines.findIndex(l => /\d{4}\s?[A-Z]{2}/.test(l));
-  const pc = (pcLine >= 0 ? locLines[pcLine] : locText).match(/(\d{4})\s?([A-Z]{2})\s+([A-Za-zÀ-ÿ' -]+)/);
-  const postcode = pc ? `${pc[1]} ${pc[2]}` : null;
+  // Soms ontbreken de twee letters: "5041 Tilburg" in plaats van "5041 AB Tilburg".
+  const pcLine = locLines.findIndex(l => /\d{4}(?:\s?[A-Z]{2})?\s+[A-Za-zÀ-ÿ]/.test(l));
+  const pc = (pcLine >= 0 ? locLines[pcLine] : locText).match(/(\d{4})(?:\s?([A-Z]{2}))?\s+([A-Za-zÀ-ÿ' .-]+)/);
+  const postcode = pc ? (pc[2] ? `${pc[1]} ${pc[2]}` : pc[1]) : null;
   const city = pc ? pc[3].replace(/\s*Open in Google maps\s*/ig, "").trim() : null;
   // Straat = de regel vóór de postcode (of hetzelfde stuk tekst ervóór als alles op één regel staat)
   let street = null;
@@ -100,13 +132,18 @@ export function parseDetail(html, url) {
   const ageKey = Object.keys(AGES).find(k => lines.some(l => l.startsWith(k)));
   const hotspot = lines.find(l => /^Hotspot\s/.test(l))?.replace(/^Hotspot\s/, "") || null;
 
-  // Organisatie: eerste regel na het datumblok die geen bekende waarde of label is
+  // Organisatie staat op de regel ná het label "Naam organisatie" (niet de fotocredit ervoor).
   const known = new Set([...TYPES, ...THEMES, ...PRICES, ...ACCESS, ...LABELS]);
   const labelRe = new RegExp(`^(${[...LABELS, ...WEEKDAYS].map(s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`, "i");
-  const afterDate = lines.slice(Math.max(iDate, 0) + 1).filter(l =>
-    !/\d{4}\s+van\s+\d/i.test(l) && !/^Van \d/i.test(l) && !/\d{4}$/.test(l) && !labelRe.test(l) &&
-    ![...known].some(k => l.includes(k)) && !Object.keys(AGES).some(k => l.startsWith(k)));
-  const org = afterDate[0] || null;
+  const iOrg = lines.findIndex((l, i) => i > iDate && /^Naam organisatie$/i.test(l));
+  let org = iOrg >= 0 ? lines[iOrg + 1] : null;
+  if (org && labelRe.test(org)) org = null;
+  if (!org) {
+    const afterDate = lines.slice(Math.max(iDate, 0) + 1).filter(l =>
+      !/\d{4}\s+van\s+\d/i.test(l) && !/^Van \d/i.test(l) && !/\d{4}$/.test(l) && !labelRe.test(l) &&
+      ![...known].some(k => l.includes(k)) && !Object.keys(AGES).some(k => l.startsWith(k)));
+    org = afterDate[0] || null;
+  }
 
   return {
     title, url, org, hotspot,
@@ -115,7 +152,7 @@ export function parseDetail(html, url) {
     types: has(TYPES), themes: has(THEMES),
     age: ageKey ? AGES[ageKey] : null,
     price, access: has(ACCESS),
-    description: $('meta[name="description"]').attr("content") || $('meta[property="og:description"]').attr("content") || null,
+    description: activityDescription($),
   };
 }
 
