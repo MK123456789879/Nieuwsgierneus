@@ -1,20 +1,33 @@
 name: Nieuwsgierneus bijwerken en deployen
+
 on:
   schedule:
-    - cron: "15 3 * * *"   # elke nacht ±05:15 Nederlandse tijd
-  workflow_dispatch: {}      # handmatig starten via de Actions-tab
+    - cron: "15 3 * * *"     # elke nacht ±05:15 Nederlandse tijd
+  workflow_dispatch: {}        # handmatig starten via de Actions-tab
   push:
-    branches: [main]         # eigen wijzigingen (site, curated.json) direct live zetten
+    branches: [main]           # eigen wijzigingen (site, curated.json) direct live zetten
+
 permissions:
   contents: write
+
+concurrency:                   # nooit twee runs tegelijk (bijv. nachtrun + jouw push)
+  group: nieuwsgierneus
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 45      # eerste run haalt ±1000 WvdW-pagina's op
+    timeout-minutes: 45        # eerste volledige run haalt ±1000 WvdW-pagina's op
+    env:
+      HAS_FIREBASE: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NIEUWSGIERNEUS != '' }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
-        with: { node-version: 20, cache: npm }
+        with:
+          node-version: 20
+          cache: npm
+
       - run: npm ci
 
       # Bij een gewone push alleen deployen; ophalen gebeurt 's nachts of handmatig
@@ -28,13 +41,23 @@ jobs:
           git config user.name "nieuwsgierneus-bot"
           git config user.email "nieuwsgierneus-bot@users.noreply.github.com"
           git add public/events.json data/cache
-          git diff --cached --quiet || git commit -m "Uitjes bijgewerkt $(date +%F)"
-          git push
+          if git diff --cached --quiet; then
+            echo "Geen wijzigingen."
+          else
+            git commit -m "Uitjes bijgewerkt $(date +%F)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
 
       - name: Deploy naar Firebase Hosting
+        if: env.HAS_FIREBASE == 'true'
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_NIEUWSGIERNEUS }}
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
           channelId: live
+
+      - name: Firebase nog niet ingesteld
+        if: env.HAS_FIREBASE != 'true'
+        run: echo "::notice::Deploy overgeslagen. Zet secret FIREBASE_SERVICE_ACCOUNT_NIEUWSGIERNEUS en variabele FIREBASE_PROJECT_ID."
