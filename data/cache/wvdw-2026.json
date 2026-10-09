@@ -30181,5 +30181,32 @@
     "price": "Gratis",
     "access": [],
     "description": "Je bezoek aan Weekend van de Wetenschap in MindLabs is niet compleet zonder bezoek aan onze kindercolleges! Dit is een les speciaal voor kinderen door experts. Luister wat de experts te vertellen hebben en vraag hen…"
+  },
+  "https://weekendvandewetenschap.nl/activiteiten/2026/cansat-workshop-voor-middelbare-scholieren/": {
+    "title": "CanSat-workshop voor middelbare scholieren",
+    "url": "https://weekendvandewetenschap.nl/activiteiten/2026/cansat-workshop-voor-middelbare-scholieren/",
+    "org": "Dutch Innovation Park",
+    "hotspot": null,
+    "venue": "Dutch Innovation Factory Bleiswijkseweg 37E 2712 PB Zoetermeer",
+    "street": "Bleiswijkseweg 37E",
+    "postcode": "2712 PB",
+    "city": "Zoetermeer",
+    "slots": [
+      {
+        "date": "2026-10-02",
+        "from": "13:00",
+        "to": "16:00"
+      }
+    ],
+    "types": [
+      "Workshop"
+    ],
+    "themes": [
+      "Ruimte & Sterren"
+    ],
+    "age": "14–18",
+    "price": "Gratis",
+    "access": [],
+    "description": "Maak kennis met de wereld van satellieten, sensortechnologie en data uit de ruimte. Tijdens de CanSat workshop ontdekken havo- en vwo-scholieren uit de bovenbouw hoe ze een satelliet kunnen maken ter grootte van een…"
   }
 }
