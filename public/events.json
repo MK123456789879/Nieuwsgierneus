@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-06T10:52:01.850Z",
+  "generated": "2026-11-07T10:07:28.093Z",
   "home": {
     "name": "Weert",
     "lat": 51.2517,
@@ -8,7 +8,7 @@
   "report": {
     "curated": {
       "found": 8,
-      "kept": 8
+      "kept": 7
     },
     "wvdw": {
       "found": 1035
@@ -64,23 +64,6 @@
       "lng": 6.19277,
       "province": "Limburg",
       "km": 43
-    },
-    {
-      "source": "curated",
-      "id": "kbbal-2026",
-      "title": "Kinderboekenbal",
-      "cat": "boek",
-      "start": "2026-10-07",
-      "place": "Natlab, Eindhoven",
-      "address": "Kastanjelaan 500 Eindhoven",
-      "city": "Eindhoven",
-      "age": "6–12",
-      "why": "Theater en creatieve workshops van de Bibliotheek Regio Eindhoven.",
-      "url": "https://go-kids.nl/eindhoven/agenda/kinderboekenweek-2026-bij-de-bibliotheek-regio-eindhoven",
-      "lat": 51.44586,
-      "lng": 5.45445,
-      "province": "Noord-Brabant",
-      "km": 28
     },
     {
       "source": "curated",
