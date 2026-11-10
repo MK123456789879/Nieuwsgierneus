@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-09T11:30:09.627Z",
+  "generated": "2026-11-10T11:10:46.130Z",
   "home": {
     "name": "Weert",
     "lat": 51.2517,
@@ -8,7 +8,7 @@
   "report": {
     "curated": {
       "found": 8,
-      "kept": 7
+      "kept": 6
     },
     "wvdw": {
       "found": 1035
@@ -64,24 +64,6 @@
       "lng": 6.19277,
       "province": "Limburg",
       "km": 43
-    },
-    {
-      "source": "curated",
-      "id": "bonnefanten-avond-2026",
-      "title": "Avondavontuur in het Bonnefanten",
-      "cat": "kunst",
-      "start": "2026-10-10",
-      "time": "17:00–21:00",
-      "place": "Bonnefanten, Maastricht",
-      "address": "Avenue Céramique 250 Maastricht",
-      "city": "Maastricht",
-      "age": "Gezin",
-      "why": "Het museum wordt een avond lang een groot avontuur voor het hele gezin.",
-      "url": "https://go-kids.nl/limburg/agenda",
-      "lat": 50.84252,
-      "lng": 5.70203,
-      "province": "Limburg",
-      "km": 45
     },
     {
       "source": "curated",
