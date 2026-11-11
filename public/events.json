@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T11:10:46.130Z",
+  "generated": "2026-11-11T10:56:18.268Z",
   "home": {
     "name": "Weert",
     "lat": 51.2517,
@@ -8,7 +8,7 @@
   "report": {
     "curated": {
       "found": 8,
-      "kept": 6
+      "kept": 5
     },
     "wvdw": {
       "found": 1035
@@ -33,19 +33,6 @@
       "lng": 5.70203,
       "province": "Limburg",
       "km": 45
-    },
-    {
-      "source": "curated",
-      "id": "kbw-2026",
-      "title": "Kinderboekenweek: Spot aan!",
-      "cat": "boek",
-      "start": "2026-09-30",
-      "end": "2026-10-11",
-      "place": "Bibliotheken in de regio",
-      "age": "4–12",
-      "price": "Vaak gratis",
-      "why": "Thema rond optreden en podium: voorstellingen, workshops en voorleesmomenten in bibliotheken.",
-      "url": "https://go-kids.nl/limburg/agenda/kinderboekenweek-7"
     },
     {
       "source": "curated",
