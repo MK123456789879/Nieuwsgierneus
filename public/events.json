@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-24T13:42:19.651Z",
+  "generated": "2026-11-25T12:53:49.483Z",
   "home": {
     "name": "Weert",
     "lat": 51.2517,
@@ -8,7 +8,7 @@
   "report": {
     "curated": {
       "found": 8,
-      "kept": 5
+      "kept": 4
     },
     "wvdw": {
       "found": 1035
@@ -51,24 +51,6 @@
       "lng": 6.19277,
       "province": "Limburg",
       "km": 43
-    },
-    {
-      "source": "curated",
-      "id": "ddw-2026",
-      "title": "Dutch Design Week: Families & Young Minds",
-      "cat": "design",
-      "start": "2026-10-17",
-      "end": "2026-10-25",
-      "place": "Eindhoven",
-      "city": "Eindhoven",
-      "age": "Alle leeftijden",
-      "price": "Kinderticket",
-      "why": "Ontwerpers ontmoeten, routes en doe-dingen voor gezinnen. Valt precies in de herfstvakantie.",
-      "url": "https://ddw.nl/en/main-menu-programme/ddw-young-education/families-young-minds-eng",
-      "lat": 51.45016,
-      "lng": 5.45854,
-      "province": "Noord-Brabant",
-      "km": 28
     },
     {
       "source": "curated",
